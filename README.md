@@ -99,4 +99,4 @@ The `nvidia-signing.service`:
 
 ## 📜 License
 
-GPL-3.0
+MIT
