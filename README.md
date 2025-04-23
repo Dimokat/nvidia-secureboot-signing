@@ -100,3 +100,5 @@ The `nvidia-signing.service`:
 ## 📜 License
 
 MIT
+
+(P.S. Do whatever you want with it)
