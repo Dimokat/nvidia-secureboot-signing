@@ -36,7 +36,7 @@ This repository contains a setup script that automates signing NVIDIA kernel mod
 
 3. **Enroll the MOK key** (you'll be prompted to set a password):
    ```bash
-   sudo mokutil --import /var/lib/nvidia-signing/MOK.crt
+   sudo mokutil --import /var/lib/nvidia-signing/MOK.der
    ```
 
 4. **Reboot** your system. During boot, follow the on-screen instructions to enroll the key (you’ll need the password you set).
