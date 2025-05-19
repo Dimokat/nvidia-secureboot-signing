@@ -3,14 +3,14 @@
 set -e
 
 KEY_DIR="/var/lib/nvidia-signing"
-KEY="$KEY_DIR/MOK.key"
-CRT="$KEY_DIR/MOK.crt"
+PEM="$KEY_DIR/MOK.key"
+DER="$KEY_DIR/MOK.der"
 SCRIPT_PATH="/usr/local/bin/nvidia-sign.sh"
 SERVICE_PATH="/etc/systemd/system/nvidia-signing.service"
 
 echo "[*] Creating signing key..."
 sudo mkdir -p "$KEY_DIR"
-sudo openssl req -new -x509 -newkey rsa:2048 -keyout "$KEY" -out "$CRT" -nodes -days 36500 -subj "/CN=NVIDIA Secure Boot Module/" || {
+sudo openssl req -new -x509 -newkey rsa:2048 -keyout "$PEM" -outform DER -out "$DER" -nodes -days 36500 -subj "/CN=NVIDIA Secure Boot Module/" || {
     echo "[-] Failed to create keys"
     exit 1
 }
@@ -20,7 +20,7 @@ sudo tee "$SCRIPT_PATH" > /dev/null << 'EOF'
 #!/bin/bash
 
 KEY="/var/lib/nvidia-signing/MOK.key"
-CRT="/var/lib/nvidia-signing/MOK.crt"
+CRT="/var/lib/nvidia-signing/MOK.der"
 
 echo "[ $(date) ] ===== Starting NVIDIA module signing ====="
 
@@ -65,5 +65,5 @@ echo "[*] Reloading systemd and enabling service..."
 sudo systemctl daemon-reload
 sudo systemctl enable nvidia-signing.service
 
-echo "[*] Please run 'sudo mokutil --import $CRT' and reboot to enroll the MOK key."
+echo "[*] Please run 'sudo mokutil --import $DER' and reboot to enroll the MOK key."
 echo "[*] Setup complete."
